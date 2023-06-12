@@ -1,0 +1,92 @@
+\documentclass[20pt,margin=1in,innermargin=-4.5in,blockverticalspace=-0.25in]{tikzposter}
+
+\geometry{paperwidth=42in,paperheight=36in}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{enumitem}
+\usepackage[backend=biber,style=numeric]{biblatex}
+\usepackage{ncsutheme}
+\usepackage{caption}
+\usepackage[scaled]{helvet}
+\usepackage[T1]{fontenc}
+\usepackage{subfiles}
+\usepackage{tabu}
+\tabulinesep = 2mm
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{math}
+\usetikzlibrary{arrows, arrows.meta}
+
+
+\addbibresource{refs.bib}
+
+% set theme parameters
+\tikzposterlatexaffectionproofoff
+\usetheme{NCSUTheme}
+\usecolorstyle{NCSUStyle}
+
+\renewcommand\familydefault{\sfdefault} 
+
+\makeatletter
+\def\title#1{\gdef\@title{\scalebox{\TP@titletextscale}{%
+\begin{minipage}[t]{\linewidth}
+\centering
+#1
+\par
+\vspace{0.5em}
+\end{minipage}%
+}}}
+\makeatother
+
+\title{
+    \textbf{
+    Title
+    }
+}
+
+\author{
+    Grayson Gall\textsuperscript{1}, 
+}
+
+\institute{
+    \textsuperscript{1}North Carolina State University, North Carolina, USA\\
+}
+
+\newcommand{\blocktitlefontsize}{\huge}
+\newcommand{\blockbodyfontsize}{\large}
+\newcommand{\citationfontsize}{\normalsize}
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+
+\renewcommand*{\bibfont}{\citationfontsize}
+
+% begin document
+\begin{document}
+\maketitle
+    
+
+\node[anchor=west,xshift=10cm, yshift=-2cm] at (TP@title.west) 
+{
+
+    \includegraphics[width=29.1cm]{logos/ncstate-brick-4x1-red.png}
+
+};
+
+\centering
+\begin{columns}
+    \hspace{2mm}
+    \column{0.297}
+        \subfile{columns/left}
+    \column{0.40}
+        \subfile{columns/center}
+    \column{0.30}
+        \subfile{columns/right}
+    \end{columns}
+\end{document}

@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{esvect}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{epstopdf}
+\usepackage[table]{xcolor}
+\usepackage{pdfpages}
+\usepackage{tabu}
+\usepackage{arydshln}
+
+\tabulinesep = 1.5mm
+\usepackage{subfiles} % Best loaded last in the preamble
+
+
+\usepackage[
+    backend=biber,
+    style=numeric, 
+    sorting=nty, 
+    maxbibnames=99
+]{biblatex}
+           
+%\addbibresource{works.bib}
+
+\setlength{\parindent}{0pt}
+
+
+\newcommand{\unit}[1]{
+    \: \left[ \text{#1} \right]
+}
+
+\newcommand{\fracunit}[2]{
+    \: \left[ 
+    \frac{\text{#1}}{\text{#2}}
+    \right]
+}
+
+\newcommand{\ans}[1]{
+    \begin{center}
+        \begin{tabu}{|c|}
+            \hline \
+             \( #1 \)   
+            \\ \hline 
+        \end{tabu}
+    \end{center}
+}
+
+\newcommand{\textans}[1]{
+    \begin{center}
+        \begin{tabu}{|c|}
+            \hline \
+            #1     
+            \\ \hline 
+        \end{tabu}
+    \end{center}
+}
+
+\newcommand{\eref}[1]{equation \ref{#1}}
+
+\newcommand{\Eref}[1]{Equation \ref{#1}}
+
+\newcommand{\tref}[1]{table \ref{#1}}
+
+\newcommand{\Tref}[1]{Table \ref{#1}}
+
+\newcommand{\fref}[1]{figure \ref{#1}}
+
+\newcommand{\Fref}[1]{Figure \ref{#1}}
+
+% macros for integration by parts using the tabular method 
+\newcommand{\tabmethod}[1]{
+\begin{table}[H]
+    \centering
+    \begin{tabu}{cccc}
+        & u & & dv \\
+        \hline
+        #1        
+    \end{tabu}
+\end{table}
+}
+\newcommand{\tabmethodstep}[4]{ \(#1\) & \(#2\) & \(#3\) & \(#4\) \\ & & \(\searrow\) & \\ }
+\newcommand{\tabmethodstepnoarrow}[4]{ \(#1\) & \(#2\) & \(#3\) & \(#4\) \\ }
+
+\def\rcurs{{\mbox{$\resizebox{.16in}{.08in}{\includegraphics{script/ScriptR}}$}}}
+\def\brcurs{{\mbox{$\resizebox{.16in}{.08in}{\includegraphics{script/BoldR}}$}}}
+\def\hrcurs{{\mbox{$\hat \brcurs$}}}
+
+\hypersetup{pdfborder=0 0 0}
+
+\title{\textbf{Homework \#}}
+\author{
+    Name: Grayson Gall 
+    \\ \\
+    Class: NE 40\# - 00\#
+}
+\date{Due: February \#\#, 2023}
+
+% Command for setting the subsections to have letters 
+% uncomment to use alphabetic subsections
+%\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+\section{}
+\subfile{sections/p1}
+
+% Uncomment for Citing Sources
+%\newpage 
+%\nocite{*}
+%\printbibliography
+\end{document}
+
+
+

@@ -1,0 +1,37 @@
+ \documentclass{resume}
+\usepackage[hidelinks]{hyperref}
+\usepackage{multicol}
+\usepackage{subfiles}
+\usepackage[super]{nth}
+
+\usepackage[
+    backend=biber,
+    style=numeric, 
+    sorting=nty, 
+    maxbibnames=99
+]{biblatex}
+           
+\addbibresource{works.bib}
+
+\setitemize{nolistsep}
+\setlength\multicolsep{0pt}
+
+\name{Maximiliano Jose Velasco}
+
+\contact{\href{tel:7044507486}{(704)-450-7586}}
+\contact{\href{mailto:email@ncsu.edu}{mjvelas2@ncsu.edu}}
+
+
+\begin{document}
+\makeheader
+
+\subfile{Sections/Education}
+
+\subfile{Sections/Experience}
+
+\subfile{Sections/Skills}
+
+\subfile{Sections/Awards}
+
+\subfile{Sections/Projects}
+\end{document}
