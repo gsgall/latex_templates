@@ -1,0 +1,137 @@
+{
+  "pdiff": {
+    "prefix": "pdiff",
+    "body": "\\pdiff{$1}{$2}$0",
+    "description": "Using the command for a partial derivative"
+  },
+  "diff": {
+    "prefix": "diff",
+    "body": "\\diff{$1}{$2}$0",
+    "description": "Using the command for a derivative"
+  },
+  "elist": {
+    "prefix": "elist",
+    "body": "\\begin{enumerate}\n  \\item $0\n\\end{enumerate}",
+    "description": "Add an enumerated list"
+  },
+  "ilist": {
+    "prefix": "ilist",
+    "body": "\\begin{itemize}\n  \\item $0\n\\end{itemize}",
+    "description": "Add an itemized list"
+  },
+  "tabu": {
+    "prefix": "tabu",
+    "body": "\\begin{table}[H]\n  \\begin{tabu}{$1} \n    \\hline\n    \\hline\n    $2\n    \\hline\n  \\end{tabu}\n  \\caption{$3}\n  \\label{tab:$4}\n\\end{table}",
+    "description": "Add a table in the tabu environment"
+  },
+  "fig": {
+    "prefix": "fig",
+    "body": "\\begin{figure}[H]\n  \\centering\n  \\includegraphics[$1]{$2}\n  \\caption{$3}\n  \\label{fig:$5}\n\\end{figure}",
+    "description": "Add a figure"
+  },
+  "eql": {
+    "prefix": "eq",
+    "body": "\\begin{equation} \\label{eq:$1}\n  $2\n\\end{equation}",
+    "description": "Add an equation"
+  },
+  "eq": {
+    "prefix": "eq",
+    "body": "\\begin{equation}\n  $1\n\\end{equation}",
+    "description": "Add an equation"
+  },
+  "alignl": {
+    "prefix": "align",
+    "body": "\\begin{align} \\label{eq:$1}\n  $2 &= $3 \\\\\\\\ \n\\end{align}",
+    "description": "setting up the align env for use"
+  },
+  "align": {
+    "prefix": "align",
+    "body": "\\begin{align}\n  $2 &= $3 \\\\\\\\ \n\\end{align}",
+    "description": "setting up the align env for use"
+  },
+  "sup": {
+    "prefix": "sup",
+    "body": "^{$1}$0",
+    "description": "adding a super-script"
+  },
+  "sub": {
+    "prefix": "sub",
+    "body": "_{$1}$0",
+    "description": "adding a sub-script"
+  },
+  "sq": {
+    "prefix": "sq",
+    "body": "^{2}$0",
+    "description": "squaring a quanitity"
+  },
+  "cb": {
+    "prefix": "cb",
+    "body": "^{3}$0",
+    "description": "cubing a quanitity"
+  },
+  "frac": {
+    "prefix": "frac",
+    "body": "\\frac{\n  $1\n  }{\n  $2}\n$0",
+    "description": "Creating a fraction"
+  },
+  "vel": {
+    "prefix": "vel",
+    "body": "\\vec{v}$0",
+    "description": "Adding a velocity vector"
+  },
+  "pos": {
+    "prefix": "pos",
+    "body": "\\vec{r}$0",
+    "description": "Adding a position vector"
+  },
+  "rvt": {
+    "prefix": "rvt",
+    "body": "$1\\left(\\vec{r}, \\vec{v}, t\\right)$0",
+    "description": "Adding a full phase space dependency"
+  },
+  "rt": {
+    "prefix": "rt",
+    "body": "$1\\left(\\vec{r}, t\\right)$0",
+    "description": "Adding a spatial and time dependency"
+  },
+  "vt": {
+    "prefix": "vt",
+    "body": "$1\\left(\\vec{v}, t\\right)$0",
+    "description": "Adding a velocity and time dependency"
+  },
+  "rv": {
+    "prefix": "rv",
+    "body": "$1\\left(\\vec{r},\\vec{v}\\right)$0",
+    "description": "Adding steady state phase space dependency"
+  },
+  "r": {
+    "prefix": "r",
+    "body": "$1\\left(\\vec{r}\\right)$0",
+    "description": "Adding purely spatial dependnecy"
+  },
+  "v": {
+    "prefix": "v",
+    "body": "$1\\left(\\vec{v}\\right)$0",
+    "description": "Adding purely velocity dependnecy"
+  },
+  "t": {
+    "prefix": "t",
+    "body": "$1\\left(t\\right)$0",
+    "description": "Adding purely time dependence"
+  },
+  "lrp": {
+    "prefix": "lrp",
+    "body": "\\left($1\\right)$0",
+    "description": "Adding parenthesis in the left right env"
+  },
+  "lrb": {
+    "prefix": "lrb",
+    "body": "\\left[$1\\right]$0",
+    "description": "Adding square braces in the left right env"
+  },
+  "lrc": {
+    "prefix": "lrc",
+    "body": "\\left{$1\\right}$0",
+    "description": "Adding curly braces in the left right env"
+  }
+}

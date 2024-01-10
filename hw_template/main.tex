@@ -19,6 +19,10 @@
 \usepackage{pdfpages}
 \usepackage{tabu}
 \usepackage{arydshln}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{physics}
+\usepackage{cancel}
 
 \tabulinesep = 1.5mm
 \usepackage{subfiles} % Best loaded last in the preamble
@@ -26,14 +30,25 @@
 
 \usepackage[
     backend=biber,
-    style=numeric, 
-    sorting=nty, 
+    style=numeric,
+    sorting=nty,
     maxbibnames=99
 ]{biblatex}
-           
+
 %\addbibresource{works.bib}
 
-\setlength{\parindent}{0pt}
+% \setlength{\parindent}{0pt}
+
+% command for partial derivative
+\newcommand{\pdiff}[2]{
+    \frac{\partial #1}{\partial #2}
+}
+
+% command for a derivative
+\newcommand{\diff}[2]{
+    \frac{d #1}{d #2}
+}
+
 
 
 \newcommand{\unit}[1]{
@@ -41,7 +56,7 @@
 }
 
 \newcommand{\fracunit}[2]{
-    \: \left[ 
+    \: \left[
     \frac{\text{#1}}{\text{#2}}
     \right]
 }
@@ -50,8 +65,8 @@
     \begin{center}
         \begin{tabu}{|c|}
             \hline \
-             \( #1 \)   
-            \\ \hline 
+             \( #1 \)
+            \\ \hline
         \end{tabu}
     \end{center}
 }
@@ -60,8 +75,8 @@
     \begin{center}
         \begin{tabu}{|c|}
             \hline \
-            #1     
-            \\ \hline 
+            #1
+            \\ \hline
         \end{tabu}
     \end{center}
 }
@@ -78,19 +93,21 @@
 
 \newcommand{\Fref}[1]{Figure \ref{#1}}
 
-% macros for integration by parts using the tabular method 
+% macros for integration by parts using the tabular method
 \newcommand{\tabmethod}[1]{
 \begin{table}[H]
     \centering
     \begin{tabu}{cccc}
         & u & & dv \\
         \hline
-        #1        
+        #1
     \end{tabu}
 \end{table}
 }
 \newcommand{\tabmethodstep}[4]{ \(#1\) & \(#2\) & \(#3\) & \(#4\) \\ & & \(\searrow\) & \\ }
 \newcommand{\tabmethodstepnoarrow}[4]{ \(#1\) & \(#2\) & \(#3\) & \(#4\) \\ }
+
+\newcommand\Ccancel[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
 
 \def\rcurs{{\mbox{$\resizebox{.16in}{.08in}{\includegraphics{script/ScriptR}}$}}}
 \def\brcurs{{\mbox{$\resizebox{.16in}{.08in}{\includegraphics{script/BoldR}}$}}}
@@ -100,29 +117,26 @@
 
 \title{\textbf{Homework \#}}
 \author{
-    Name: Grayson Gall 
+    Name: Grayson Gall
     \\ \\
-    Class: NE 40\# - 00\#
+    Class:
 }
-\date{Due: February \#\#, 2023}
+\date{Due: }
 
-% Command for setting the subsections to have letters 
+% Command for setting the subsections to have letters
 % uncomment to use alphabetic subsections
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
 
 \begin{document}
 
 \maketitle
-
 \newpage
+
 \section{}
 \subfile{sections/p1}
 
 % Uncomment for Citing Sources
-%\newpage 
+%\newpage
 %\nocite{*}
 %\printbibliography
 \end{document}
-
-
-
