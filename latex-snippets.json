@@ -4,10 +4,30 @@
     "body": "\\pdiff{$1}{$2}$0",
     "description": "Using the command for a partial derivative"
   },
+  "pdiff2": {
+    "prefix": "pdiff2",
+    "body": "\\pdiff{^{2}$1}{$2^{2}}$0",
+    "description": "Using the command for a second order partial derivative"
+  },
+  "pdiff3": {
+    "prefix": "pdiff3",
+    "body": "\\pdiff{^{3}$1}{$2^{3}}$0",
+    "description": "Using the command for a third order partial derivative"
+  },
   "diff": {
     "prefix": "diff",
     "body": "\\diff{$1}{$2}$0",
     "description": "Using the command for a derivative"
+  },
+  "diff2": {
+    "prefix": "diff2",
+    "body": "\\diff{^{2}$1}{$2^{2}}$0",
+    "description": "Using the command for a second order derivative"
+  },
+  "diff3": {
+    "prefix": "diff3",
+    "body": "\\diff{^{3}$1}{$2^{3}}$0",
+    "description": "Using the command for a third order derivative"
   },
   "elist": {
     "prefix": "elist",
@@ -46,7 +66,7 @@
   },
   "align": {
     "prefix": "align",
-    "body": "\\begin{align}\n  $2 &= $3 \\\\\\\\ \n\\end{align}",
+    "body": "\\begin{align}\n  $1 &= $2 \\\\\\\\ \n\\end{align}",
     "description": "setting up the align env for use"
   },
   "sup": {
@@ -69,10 +89,15 @@
     "body": "^{3}$0",
     "description": "cubing a quanitity"
   },
+  "mfrac": {
+    "prefix": "mfrac",
+    "body": "\\frac{\n  $1\n  }{\n  $2\n}\n$0",
+    "description": "Creating a fraction intended to be used in a math environment"
+  },
   "frac": {
     "prefix": "frac",
-    "body": "\\frac{\n  $1\n  }{\n  $2}\n$0",
-    "description": "Creating a fraction"
+    "body": "\\frac{$1}{$2}$0",
+    "description": "Creating a fraction on one line"
   },
   "vel": {
     "prefix": "vel",
@@ -84,39 +109,39 @@
     "body": "\\vec{r}$0",
     "description": "Adding a position vector"
   },
-  "rvt": {
-    "prefix": "rvt",
-    "body": "$1\\left(\\vec{r}, \\vec{v}, t\\right)$0",
+  "ofrvt": {
+    "prefix": "ofrvt",
+    "body": "\\left(\\vec{r}, \\vec{v}, t\\right)$0",
     "description": "Adding a full phase space dependency"
   },
-  "rt": {
-    "prefix": "rt",
-    "body": "$1\\left(\\vec{r}, t\\right)$0",
+  "ofrt": {
+    "prefix": "ofrt",
+    "body": "\\left(\\vec{r}, t\\right)$0",
     "description": "Adding a spatial and time dependency"
   },
-  "vt": {
-    "prefix": "vt",
-    "body": "$1\\left(\\vec{v}, t\\right)$0",
+  "ofvt": {
+    "prefix": "ofvt",
+    "body": "\\left(\\vec{v}, t\\right)$0",
     "description": "Adding a velocity and time dependency"
   },
-  "rv": {
-    "prefix": "rv",
-    "body": "$1\\left(\\vec{r},\\vec{v}\\right)$0",
+  "ofrv": {
+    "prefix": "ofrv",
+    "body": "\\left(\\vec{r},\\vec{v}\\right)$0",
     "description": "Adding steady state phase space dependency"
   },
-  "r": {
-    "prefix": "r",
-    "body": "$1\\left(\\vec{r}\\right)$0",
+  "ofr": {
+    "prefix": "ofr",
+    "body": "\\left(\\vec{r}\\right)$0",
     "description": "Adding purely spatial dependnecy"
   },
-  "v": {
-    "prefix": "v",
-    "body": "$1\\left(\\vec{v}\\right)$0",
+  "ofv": {
+    "prefix": "ofv",
+    "body": "\\left(\\vec{v}\\right)$0",
     "description": "Adding purely velocity dependnecy"
   },
-  "t": {
-    "prefix": "t",
-    "body": "$1\\left(t\\right)$0",
+  "oft": {
+    "prefix": "oft",
+    "body": "\\left(t\\right)$0",
     "description": "Adding purely time dependence"
   },
   "lrp": {
