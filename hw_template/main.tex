@@ -32,7 +32,6 @@
     backend=biber,
     style=numeric,
     sorting=nty,
-    maxbibnames=99
 ]{biblatex}
 
 %\addbibresource{works.bib}
@@ -40,16 +39,14 @@
 % \setlength{\parindent}{0pt}
 
 % command for partial derivative
-\newcommand{\pdiff}[2]{
-    \frac{\partial #1}{\partial #2}
+\newcommand{\pdiff}[3][]{
+    \frac{\partial^{#1} #2}{\partial #3^{#1}}
 }
 
 % command for a derivative
-\newcommand{\diff}[2]{
-    \frac{d #1}{d #2}
+\newcommand{\diff}[3][]{
+    \frac{d^{#1} #2}{d #3^{#1}}
 }
-
-
 
 \newcommand{\unit}[1]{
     \: \left[ \text{#1} \right]
@@ -107,7 +104,7 @@
 
 \newcommand{\tabmethodstep}[3]{ \(#1\) & \(#2\) &  & \(#3\) \\ & & \(\searrow\) & \\ }
 \newcommand{\tabmethodstepnoarrow}[3]{ \(#1\) & \(#2\) & & \(#3\) \\ }
-
+\newcommand{\tabmethodlaststep}[3]{ \(#1\) & \(#2\) & $\leftarrow$ & \(#3\) \\ }
 
 \newcommand\Ccancel[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
 
