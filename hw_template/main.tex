@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{article} 
 \usepackage[utf8]{inputenc}
 \usepackage{esvect}
 \usepackage{amsmath}
@@ -7,14 +7,12 @@
 \usepackage{float}
 \usepackage{hyperref}
 
-\setlength{\parindent}{0pt}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{hyperref}
 \usepackage{amsfonts}
-\usepackage{epstopdf}
 \usepackage[table]{xcolor}
 \usepackage{pdfpages}
 \usepackage{tabu}
@@ -23,26 +21,39 @@
 \usepackage{subcaption}
 \usepackage{physics}
 \usepackage{cancel}
-
-\tabulinesep = 1.5mm
+\usepackage{cleveref}
+\usepackage{todonotes}
+\usepackage{amsmath, amsthm, amssymb, tikz, mathtools, array, mathrsfs, tensor, ifthen, xparse, graphicx}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithm
+\usepackage{algpseudocode}
 \usepackage{subfiles} % Best loaded last in the preamble
 
 
-\usepackage[
-    backend=biber,
-    style=numeric,
-    sorting=nty,
-]{biblatex}
+\tabulinesep = 1.5mm
+\setlength{\parindent}{0pt}
 
-%\addbibresource{works.bib}
-
-% \setlength{\parindent}{0pt}
-
+\newcommand{\range}[1]{
+    \text{range} \left(#1\right)
+}
+\renewcommand{\innerproduct}[2]{
+    \langle #1,#2 \rangle
+}
+\newcommand{\bspan}[1]{
+    \langle#1\rangle
+}
+\newcommand{\mspan}[1]{
+    \text{span}\left\{#1\right\}
+}
+\newcommand{\extranewline}{
+  \par \vspace{\baselineskip} 
+}
 % command for partial derivative
 \newcommand{\pdiff}[3][]{
     \frac{\partial^{#1} #2}{\partial #3^{#1}}
 }
-
+\newcommand{\proj}[2]{
+    \text{proj}_{#1} \left(#2\right)
+}
 % command for a derivative
 \newcommand{\diff}[3][]{
     \frac{d^{#1} #2}{d #3^{#1}}
@@ -78,18 +89,6 @@
     \end{center}
 }
 
-\newcommand{\eref}[1]{equation \ref{#1}}
-
-\newcommand{\Eref}[1]{Equation \ref{#1}}
-
-\newcommand{\tref}[1]{table \ref{#1}}
-
-\newcommand{\Tref}[1]{Table \ref{#1}}
-
-\newcommand{\fref}[1]{figure \ref{#1}}
-
-\newcommand{\Fref}[1]{Figure \ref{#1}}
-
 % macros for integration by parts using the tabular method
 \newcommand{\tabmethod}[1]{
 \begin{table}[H]
@@ -102,6 +101,12 @@
 \end{table}
 }
 
+\definecolor{link}{HTML}{0000EE}
+\newcommand{\link}[2]{
+  \href{#1}
+  {\color{link}\underline{#2}}
+}
+
 \newcommand{\tabmethodstep}[3]{ \(#1\) & \(#2\) &  & \(#3\) \\ & & \(\searrow\) & \\ }
 \newcommand{\tabmethodstepnoarrow}[3]{ \(#1\) & \(#2\) & & \(#3\) \\ }
 \newcommand{\tabmethodlaststep}[3]{ \(#1\) & \(#2\) & $\leftarrow$ & \(#3\) \\ }
@@ -112,20 +117,199 @@
 \def\brcurs{{\mbox{$\resizebox{.16in}{.08in}{\includegraphics{script/BoldR}}$}}}
 \def\hrcurs{{\mbox{$\hat \brcurs$}}}
 
+
+% theorem environments (with the same counter used for all, shared with the equation counter)
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+
+% definition/example/exercise/remark environments
+% uncomment line below to make the following environments non-italicized
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{remark}{Remark}
+\newtheorem{recall}{Recall}
+\newtheorem{question}{Question}
+
+% comment line below to replace the symbol at the end of proofs
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\let\originalqedsymbol\blacksquare
+
+% define the \halfblacksquare command (interpolation between \square and \blacksquare)
+\newcommand{\halfblacksquare}{%
+  \begin{tikzpicture}[scale=0.25, line width=0.15mm, inner sep=0pt, outer sep=0pt, text depth=0pt]
+    % Draw the white square
+    \fill[white] (0,0) rectangle (1,1);
+    % Draw the black half
+    \fill[black] (0,0.5) rectangle (1,1);
+    % Draw the border
+    \draw (0,0) rectangle (1,1);
+  \end{tikzpicture}\hspace{-3pt}
+}
+
+
+\newenvironment{proofclaim}[1][Proof]
+	{\begin{proof}[#1]}
+	{\renewcommand{\qedsymbol}{\halfblacksquare}\end{proof}\renewcommand{\qedsymbol}{\originalqedsymbol}}
+
+\newcommand{\qedex}{\hfill$\whitesquare$}
+\pagestyle{plain}
+
+% variable Greek letters
+\newcommand{\veps}{\varepsilon}
+\newcommand{\vkappa}{\varkappa}
+\newcommand{\vphi}{\varphi}
+\newcommand{\vpi}{\varpi}
+\newcommand{\vrho}{\varrho}
+\newcommand{\vsigma}{\varsigma}
+\newcommand{\vtheta}{\vartheta}
+
+% blackboard letters
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\Y}{\mathbb{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+
+% calligraphic letters
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+% script letters
+\newcommand{\sA}{\mathscr{A}}
+\newcommand{\sB}{\mathscr{B}}
+\newcommand{\sC}{\mathscr{C}}
+\newcommand{\sD}{\mathscr{D}}
+\newcommand{\sE}{\mathscr{E}}
+\newcommand{\sF}{\mathscr{F}}
+\newcommand{\sG}{\mathscr{G}}
+\newcommand{\sH}{\mathscr{H}}
+\newcommand{\sI}{\mathscr{I}}
+\newcommand{\sJ}{\mathscr{J}}
+\newcommand{\sK}{\mathscr{K}}
+\newcommand{\sL}{\mathscr{L}}
+\newcommand{\sM}{\mathscr{M}}
+\newcommand{\sN}{\mathscr{N}}
+\newcommand{\sO}{\mathscr{O}}
+\newcommand{\sP}{\mathscr{P}}
+\newcommand{\sQ}{\mathscr{Q}}
+\newcommand{\sR}{\mathscr{R}}
+\newcommand{\sS}{\mathscr{S}}
+\newcommand{\sT}{\mathscr{T}}
+\newcommand{\sU}{\mathscr{U}}
+\newcommand{\sV}{\mathscr{V}}
+\newcommand{\sW}{\mathscr{W}}
+\newcommand{\sX}{\mathscr{X}}
+\newcommand{\sY}{\mathscr{Y}}
+\newcommand{\sZ}{\mathscr{Z}}
+
+% sans serif letters
+\newcommand{\nA}{\mathsf{A}}
+\newcommand{\nB}{\mathsf{B}}
+\newcommand{\nC}{\mathsf{C}}
+\newcommand{\nD}{\mathsf{D}}
+\newcommand{\nE}{\mathsf{E}}
+\newcommand{\nF}{\mathsf{F}}
+\newcommand{\nG}{\mathsf{G}}
+\newcommand{\nH}{\mathsf{H}}
+\newcommand{\nI}{\mathsf{I}}
+\newcommand{\nJ}{\mathsf{J}}
+\newcommand{\nK}{\mathsf{K}}
+\newcommand{\nL}{\mathsf{L}}
+\newcommand{\nM}{\mathsf{M}}
+\newcommand{\nN}{\mathsf{N}}
+\newcommand{\nO}{\mathsf{O}}
+\newcommand{\nP}{\mathsf{P}}
+\newcommand{\nQ}{\mathsf{Q}}
+\newcommand{\nR}{\mathsf{R}}
+\newcommand{\nS}{\mathsf{S}}
+\newcommand{\nT}{\mathsf{T}}
+\newcommand{\nU}{\mathsf{U}}
+\newcommand{\nV}{\mathsf{V}}
+\newcommand{\nW}{\mathsf{W}}
+\newcommand{\nX}{\mathsf{X}}
+\newcommand{\nY}{\mathsf{Y}}
+\newcommand{\nZ}{\mathsf{Z}}
+
+% frak letters
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fB}{\mathfrak{B}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fD}{\mathfrak{D}}
+\newcommand{\fE}{\mathfrak{E}}
+\newcommand{\fF}{\mathfrak{F}}
+\newcommand{\fG}{\mathfrak{G}}
+\newcommand{\fH}{\mathfrak{H}}
+\newcommand{\fI}{\mathfrak{I}}
+\newcommand{\fJ}{\mathfrak{J}}
+\newcommand{\fK}{\mathfrak{K}}
+\newcommand{\fL}{\mathfrak{L}}
+\newcommand{\fM}{\mathfrak{M}}
+\newcommand{\fN}{\mathfrak{N}}
+\newcommand{\fO}{\mathfrak{O}}
+\newcommand{\fP}{\mathfrak{P}}
+\newcommand{\fQ}{\mathfrak{Q}}
+\newcommand{\fR}{\mathfrak{R}}
+\newcommand{\fS}{\mathfrak{S}}
+\newcommand{\fT}{\mathfrak{T}}
+\newcommand{\fU}{\mathfrak{U}}
+\newcommand{\fV}{\mathfrak{V}}
+\newcommand{\fW}{\mathfrak{W}}
+\newcommand{\fX}{\mathfrak{X}}
+\newcommand{\fY}{\mathfrak{Y}}
+\newcommand{\fZ}{\mathfrak{Z}}
 \hypersetup{pdfborder=0 0 0}
 
-\title{\textbf{Homework \#}}
-\author{
-    Name: Grayson Gall
-    \\ \\
-    Class:
-}
-\date{Due: }
+\title{\textbf{NE 580}}
+\author{Grayson Gall}
+
+
+\usepackage[
+    backend=biber,
+    style=numeric,
+    sorting=nty,
+]{biblatex}
+
+%\addbibresource{works.bib}
 
 % Command for setting the subsections to have letters
 % uncomment to use alphabetic subsections
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
-
 \begin{document}
 
 \maketitle
