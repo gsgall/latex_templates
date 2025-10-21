@@ -1,0 +1,391 @@
+\ProvidesPackage{gallncsu}[2025/06/04 Custom Style Package for NCSU themed slides]
+% remove the tool part that popups
+\setbeamertemplate{navigation symbols}{}
+\RequirePackage{animate}
+\RequirePackage{graphicx}
+\RequirePackage{physics}
+\RequirePackage{etoolbox}
+\RequirePackage{subcaption}
+\RequirePackage{anyfontsize}
+\RequirePackage{geometry}
+\RequirePackage{adjustbox}
+\RequirePackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=1.15}
+\RequirePackage{hyperref}
+\RequirePackage{xspace}
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{media9}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsfonts}
+\RequirePackage{enumitem}
+\RequirePackage{contour}
+\RequirePackage{ulem}
+
+\renewcommand{\ULdepth}{1.8pt}
+\contourlength{0.8pt}
+
+\newcommand{\myuline}[1]{%
+  \uline{\phantom{#1}}%
+  \llap{\contour{white}{#1}}%
+}
+% adding a little extra spacing on tables
+\RequirePackage{tabu}
+\tabulinesep = 1.5mm
+% setting the font to be arial
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+
+\RequirePackage{silence}
+% silence a few warnings about unavailable fonts maybe look into this a little more later
+\WarningFilter{latexfont}{Font shape}
+\WarningFilter{latexfont}{Some font shapes were not available}
+
+\setmainfont{Arial}
+\setmathfont{STIX Two Math}
+\setmathfont{Arial}[
+    range={up/{num},bfup/{num}},
+    Script=Latin,
+    script-features={},
+    sscript-features={},
+    CharacterVariant={}
+]
+\renewcommand{\familydefault}{\rmdefault}
+
+% NCSU primary color palette
+\RequirePackage{xcolor}
+\definecolor{NCSURed}{HTML}{FF0000}
+\definecolor{NCSUWhite}{HTML}{FFFFFF}
+\definecolor{NCSUBlack}{HTML}{000000}
+\definecolor{link}{HTML}{0000EE}
+
+\newcommand{\customlink}[1]{
+    \href{#1}{\color{link}{\myuline{#1}}}
+}
+
+\RequirePackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{math}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows, arrows.meta}
+
+% command for partial derivative
+\newcommand{\pdiff}[2]{
+    \frac{\partial #1}{\partial #2}
+}
+% command for a derivative
+\newcommand{\diff}[2]{
+    \frac{d #1}{d #2}
+}
+
+\newcommand{\etal}{\textit{et al. }}
+\newcommand{\etals}{\textit{et al.'s }}
+\setbeamertemplate{section title}{}
+
+% Set the frame title backgrounds to be text black, background white
+\setbeamercolor{palette primary}{fg=black, bg=white}
+
+% Set the bar underneath the title blocks to a color
+\setbeamercolor{progress bar}{fg=white,bg=white}
+
+% Set text color
+\setbeamercolor{normal text}{fg=black,bg=white}
+
+% Set slide title color
+\setbeamercolor{frametitle}{fg=black,bg=white}
+
+
+% removes the footnote line that is usually inserted
+\renewcommand*\footnoterule{}
+% sets the figure text color to black
+\setbeamercolor{caption name}{fg=black}
+% sets the figure style to be numbered
+\setbeamertemplate{caption}[numbered]
+% removes auto formatted frame number so we can redefine them
+\setbeamertemplate{frame numbering}[none]
+% Defines the total number of slides in the presentation we
+\newcommand{\inserttotalframenumberminusone}{\the\numexpr\inserttotalframenumber-1\relax}
+
+% custom definition for the footnote
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  % displayin the primary author and a short presentation name
+  \begin{beamercolorbox}[wd=.9\paperwidth,ht=2.25ex,dp=1ex,left]{author in head/foot}%
+    \hspace*{2ex}
+    \usebeamerfont{author in head/foot}\insertshortauthor - \insertshorttitle
+  \end{beamercolorbox}%
+  % adding the page numbers
+  \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{author in head/foot}%
+    \insertframenumber{}/\inserttotalframenumber{} \hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vspace{0.5em}
+}
+
+\RequirePackage[
+  sorting=none,
+  backend=biber,
+  style=authoryear,
+  citestyle=authoryear,
+  autocite=footnote,
+  citetracker=true,
+  giveninits=true,
+  uniquename=init,
+  maxcitenames=1,
+  mincitenames=1,
+  dashed=false,
+  doi=true,
+  url=true,
+]{biblatex}
+
+% removes the underlining from article title
+\normalem
+% removes hanging indention in the bibliography
+\setlength{\bibhang}{0pt}
+% removing the periods between all the fields
+\renewcommand*{\newunitpunct}{\addspace}
+\DeclareFieldFormat{title}{\mkbibquote{#1}}
+\DeclareFieldFormat{doi}{\customlink{https://doi.org/#1}}
+\DeclareFieldFormat{url}{\customlink{#1}}
+\DeclareFieldFormat{volume}{#1}
+\DeclareFieldFormat{number}{(#1)}
+\DeclareFieldFormat[article]{volume}{#1}
+\DeclareFieldFormat[article]{number}{(#1)}
+\DeclareFieldFormat{parens}{#1}
+\DeclareFieldFormat{publisher}{\mkbibemph{#1}}
+\DeclareFieldFormat{journal}{\textnormal{\textit{#1}}}
+% removes the text in from before publication source
+\renewbibmacro{in:}{}
+\DeclareFieldFormat{labelnumberwidth}{\mkbibsuperscript{#1}}
+\setlength{\labelnumberwidth}{0pt}
+\renewcommand*{\andothersdelim}{\addcomma\space}
+\renewcommand*{\multicitedelim}{\textsuperscript{,}}
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addnbthinspace}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}%
+}
+% counter for displaying the numbers in the bibliography based on appearance in the presentation
+\newcounter{bibnum}
+\setbeamertemplate{bibliography item}{\arabic{bibnum}.\stepcounter{bibnum}}
+
+
+\newtoggle{citeseen}
+
+\newbibmacro{cite:extrainfo:article}{%
+  \printnames[family-given][1-1]{labelname}
+  \printfield{year}
+  \usebibmacro{journal}
+  \printfield{volume}
+  \iffieldundef{number}
+    {}
+    {{\printfield{number}}}
+}
+
+\newbibmacro{cite:extrainfo:book}{%
+  \printnames[family-given][1-1]{labelname}%
+  \newunit
+  \printfield{year}
+  \newunit
+  \printlist{publisher}%
+  \newunit
+  \printfield{volume}
+}
+
+\newbibmacro{cite:extrainfo:techreport}{%
+  \printnames[family-given][1-1]{labelname}%
+  \newunit
+  \printfield{title}%
+}
+
+% TODO: fix the techreport citation
+\renewbibmacro*{cite}{%
+  \ifboolexpr{
+    test {\ifentrytype{article}}
+    or
+    test {\ifentrytype{book}}
+    or
+    test {\ifentrytype{techreport}}
+  }{%
+    \ifciteseen{%
+      \iftoggle{citeseen}{%
+        \textsuperscript{\thefootnote}%
+      }{%
+        \mkbibfootnote{%
+          \ifentrytype{article}
+            {\usebibmacro{cite:extrainfo:article}}{}
+          \ifentrytype{book}
+            {\usebibmacro{cite:extrainfo:book}}{}
+          \ifentrytype{techreport}
+            {\usebibmacro{cite:extrainfo:techreport}}{}
+        }%
+        \global\toggletrue{citeseen}%
+      }%
+    }{%
+      \mkbibfootnote{%
+          \ifentrytype{article}
+            {\usebibmacro{cite:extrainfo:article}}{}
+          \ifentrytype{book}
+            {\usebibmacro{cite:extrainfo:book}}{}
+          \ifentrytype{techreport}
+            {\usebibmacro{cite:extrainfo:techreport}}{}
+      }%
+      \global\toggletrue{citeseen}%
+    }
+  }{}
+}
+
+% sets the footnote in columns to be numbers and not letters
+% \renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+% \makeatletter
+% \renewcommand\thempfootnote{\thefootnote}
+% \makeatother
+% version of footnote citation that
+% makes it so citations extend across the entire page and
+% not just in each column
+\makeatletter
+\renewrobustcmd{\blx@mkbibfootnote}[2]{%
+  \iftoggle{blx@footnote}
+    {\blx@warning{nested notes}%
+     \addspace\mkbibparens{#2}}
+    {\unspace
+     \ifnum\blx@notetype=\tw@
+       \expandafter\@firstoftwo
+     \else
+       \expandafter\@secondoftwo
+     \fi
+       {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}
+       {\csuse{footnote#1}[frame]{\protecting{\blxmkbibnote{foot}{#2}}}}}
+       }
+\makeatother
+% Remove the page icon and number from the bibliography
+\DeclareFieldFormat{pages}{}
+\DeclareFieldFormat{postnote}{}
+\renewbibmacro*{pageref}{}
+% Load the bibliography file
+\addbibresource{works.bib}
+
+% Customize the frametitle template to remove the progress bar
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \usebeamerfont{frametitle}%
+  \begin{minipage}[b][2.5ex][c]{\textwidth}
+    \vspace*{2.5cm}
+    \centering
+    \textbf{\insertframetitle}%
+  \end{minipage}%
+}
+
+% setting fontsizes typically 1/2 of pptx size is the same for latex
+% setting all the basic font sizes
+\renewcommand{\small}{\fontsize{10}{12}\selectfont}
+\renewcommand{\normalsize}{\fontsize{10}{12}\selectfont}
+\renewcommand{\large}{\fontsize{11}{13.2}\selectfont}
+\renewcommand{\huge}{\fontsize{20}{24}\selectfont}
+\renewcommand{\footnotesize}{\fontsize{7}{8.4}\selectfont}
+\newcommand{\legendsize}{\fontsize{8}{9.6}\selectfont}
+
+\makeatletter
+% Initialize first author to empty
+\gdef\@firstauthor{}
+% Command to set the first author
+\newcommand{\firstauthor}[1]{%
+  \gdef\@firstauthor{#1}%
+}
+% Command to insert the first author on the title slide
+\newcommand{\insertfirstauthor}{%
+  \@ifundefined{@firstauthor}
+    {\@latex@warning@no@line{First author not set}}
+    {\textbf{\myuline{\smash{\@firstauthor}}}}%
+}
+
+% command for inserting the first autor with no formatting
+\newcommand{\insertplainfirstauthor}{%
+  \@ifundefined{@firstauthor}
+    {\@latex@warning@no@line{First author not set}}
+    {\@firstauthor}
+}
+
+% command for setting the primary advisor for the talk
+\newcommand{\advisor}[1]{%
+  \gdef\@advisor{#1}%
+}
+% command for inserting the primary advisor with formatting on the slide
+\newcommand{\insertadvisor}{%
+  \@ifundefined{@advisor}
+    {\@latex@warning@no@line{First author not set}}
+    {\textbf{\myuline{\smash{\@advisor}}}}%
+}
+% command for inserting the primary advisor with formatting on the slide
+% Initialize the advisor to empty
+\gdef\@advisor{}
+\makeatother
+
+\gdef\@background{backgrounds/ncsu_slide_background.pdf}
+% Command to set the first author
+\newcommand{\background}[1]{%
+  \gdef\@background{#1}%
+}
+% short author, this is what will be displayed on every slide
+\author[\insertplainfirstauthor]{}
+\setbeamertemplate{background canvas}{%
+    \includegraphics[width=\paperwidth,height=\paperheight]{\@background}
+}
+
+% Set default labels to black bullet centered
+\setlist[itemize,1]{label=\centering\textcolor{black}{$\bullet$}, font=\normalfont\color{black}}
+\setlist[itemize,2]{label=\centering\textcolor{black}{$\bullet$}, font=\normalfont\color{black}}
+\setlist[itemize,3]{label=\centering\textcolor{black}{$\bullet$}, font=\normalfont\color{black}}
+
+% making all the font in the bibliography black
+\setbeamercolor{bibliography entry}{fg=black}
+\setbeamercolor{bibliography item}{fg=black}
+\setbeamercolor{bibliography entry author}{fg=black}
+\setbeamercolor{bibliography entry title}{fg=black}
+\setbeamercolor{bibliography entry location}{fg=black}
+\setbeamercolor{bibliography entry note}{fg=black}
+
+\newcommand{\agendaslide}{%
+\begin{frame}[plain, noframenumbering]
+  \begingroup
+  \setbeamercolor{section in toc}{fg=black}
+  \setbeamertemplate{section in toc}{%
+    \textbullet~\inserttocsection\par
+  }
+  \tableofcontents
+  \endgroup
+\end{frame}
+}
+
+\newcommand{\titleslide}[4]
+{
+\begin{frame}[plain, noframenumbering]
+   \hspace*{-0.25in}
+   \vspace{-1.5cm}
+    \begin{minipage}{\dimexpr\textwidth+0.5in\relax}
+      \centering
+      {\huge\textbf{
+        \inserttitle
+      }}\\
+      {\Large\vspace{\baselineskip}
+        #1
+      }\\
+      {\normalsize\vspace{\baselineskip}
+        #2
+      }\\
+      {\large\vspace{\baselineskip}
+        #3
+      }\\
+      {\normalsize\vspace{\baselineskip}
+        #4
+      }
+    \end{minipage}
+\end{frame}
+}
+% package for having individual files for different sections
+\RequirePackage{subfiles}

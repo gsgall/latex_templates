@@ -1,5 +1,38 @@
-\block{\blocktitlefontsize Left Section 1}
-{}
+\block{\blocktitlefontsize Abstract}
+{
+As interest in producing energy from magnetic confinement fusion has increased in recent years, unsolved engineering challenges that prevent bringing this technology to the grid have also become more important than ever. One such challenge is the design of plasma facing components (PFCs). In order to create high-fidelity multiphysics simulations of these systems, a new Multiphysics Object-Oriented Simulation Environment (MOOSE)-based framework is being developed, the Fusion ENergy Integrated multiphys-X (FENIX) framework. While other frameworks for modeling PFCs exist \cite{badalassi2023fermi,bonnin2016presentation,candy2017atom,sircar2022fermi}, FENIX is open-source, meets high software quality standards, and leverages the unique capability of the MOOSE framework to tightly couple relevant physics. FENIX builds on several core MOOSE modules---Electromagnetics, Heat Transfer, Ray Tracing, Solid Mechanics, and Thermal Hydraulics---as well as existing MOOSE-based applications: the Tritium Migration Analysis Program, Version 8 (TMAP8) and Cardinal. This work focuses on the development of discrete-particle-based simulations for kinetic plasma modeling using a technique commonly known as Particle In Cell (PIC).
+}
     
 \block{\blocktitlefontsize Left Section 2}
-{}    
+{
+\begin{figure}[H]
+  \begin{tikzpicture}[
+    auto,
+    node distance = 1cm,
+    very thick,
+    algoBlue/.style={rectangle,
+    draw=NCSURed,
+    font=\bfseries\boldmath,
+    text width=3.5cm,
+    align=center,
+    rounded corners=2.5mm},
+    auto,
+    line width = 2pt
+    ]
+    \node[algoBlue] (1) [yshift=0.25cm] {Initialize Particles};
+    \node[algoBlue] (2) [yshift=-1cm] {Calculate $\vec{v}_{n+1/2}$ using $\vec{E}_n$ and $\vec{B}_n$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (1) -- (2);
+    \node[algoBlue] (3) [xshift=5cm, yshift=-3.75cm] {Move particles to $\vec{r}_{n+1}$ using $\vec{v}_{n+1/2}$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (2.east) -| (3.north);
+    \node[algoBlue] (4) [xshift=2.5cm, yshift=-6cm] {Compute $\left< J_{n+{1/2}}, \psi \right>$ during movement};
+    \draw[line width=0.3mm, >=triangle 45, ->] (3.south) |- (4.east);
+    \node[algoBlue] (5) [xshift=-2.5cm, yshift=-6cm] {Compute $\left< \rho_{n+1}, \psi \right>$ based on $\vec{r}_{n+1}$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (4) -- (5);
+    \node[algoBlue] (6)  [xshift=-5cm, yshift=-4.5cm] {Particle\\Collisions};
+    \draw[line width=0.3mm, >=triangle 45, ->] (5.west) -| (6.south);
+    \node[algoBlue] (7)  [xshift=-5cm, yshift=-2.5cm] {Solve $\vec{E}_{n+1}$ and $\vec{B}_{n+1}$ using $\left< \rho_{n+1}, \psi \right>$ and $\left< J_{n+{1/2}}, \psi \right>$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (6) -- (7);
+    \draw[line width=0.3mm, >=triangle 45, ->] (7.north) |- (2.west);
+  \end{tikzpicture}
+\end{figure}
+}    

@@ -1,9 +1,9 @@
-\documentclass[20pt,margin=1in,innermargin=-4.5in,blockverticalspace=-0.25in]{tikzposter}
+% !TeX program = xelatex
+\documentclass[20pt,margin=0in,innermargin=-4in,blockverticalspace=-0.25in]{tikzposter}
 
 \geometry{paperwidth=42in,paperheight=36in}
 
 
-\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
@@ -15,16 +15,18 @@
 \usepackage[backend=biber,style=numeric]{biblatex}
 \usepackage{ncsutheme}
 \usepackage{caption}
-\usepackage[scaled]{helvet}
-\usepackage[T1]{fontenc}
 \usepackage{subfiles}
 \usepackage{tabu}
 \tabulinesep = 2mm
 
+\usepackage{fontspec}
+\setmainfont{Arial}
+\renewcommand{\familydefault}{\rmdefault}
+
 \usetikzlibrary{positioning}
 \usetikzlibrary{math}
 \usetikzlibrary{arrows, arrows.meta}
-
+ 
 
 \addbibresource{refs.bib}
 
@@ -33,7 +35,8 @@
 \usetheme{NCSUTheme}
 \usecolorstyle{NCSUStyle}
 
-\renewcommand\familydefault{\sfdefault} 
+\usepackage{fontspec}
+\setmainfont{Arial}
 
 \makeatletter
 \def\title#1{\gdef\@title{\scalebox{\TP@titletextscale}{%
@@ -48,16 +51,23 @@
 
 \title{
     \textbf{
-    Title
+    Kinetic Plasma Simulation in the MOOSE Framework
     }
 }
 
 \author{
-    Grayson Gall\textsuperscript{1}, 
+    Grayson S. Gall\textsuperscript{1},
+    Logan H. Harbour\textsuperscript{2},
+    Casey T. Icenhour\textsuperscript{2},\\
+    Pierre-Clément A. Simon\textsuperscript{2},
+    Derek Gaston\textsuperscript{2},
+    Amanda M. Lietz\textsuperscript{1}
 }
 
 \institute{
+    \vspace{1cm}
     \textsuperscript{1}North Carolina State University, North Carolina, USA\\
+    \textsuperscript{2}Idaho National Laboratory, Idaho Falls, Idaho
 }
 
 \newcommand{\blocktitlefontsize}{\huge}
@@ -72,13 +82,26 @@
 \maketitle
     
 
-\node[anchor=west,xshift=10cm, yshift=-2cm] at (TP@title.west) 
+\node[anchor= west,xshift=12cm, yshift=-1cm] at (TP@title.west) 
 {
-
-    \includegraphics[width=29.1cm]{logos/ncstate-brick-4x1-red.png}
-
+    \includegraphics[height=6cm]{logos/comps-white.png}
 };
-
+\node[anchor=south west,xshift=12cm, yshift=-7.5cm] at (TP@title.west) 
+{
+    \includegraphics[width=21cm]{logos/ncstate-brick-4x1-red.png}
+};
+\node[anchor=west,xshift=-33cm, yshift=-1cm] at (TP@title.east) 
+{
+    \includegraphics[height=4cm]{logos/FENIX-10.png}
+};
+\node[anchor=east,xshift=-12cm, yshift=-1cm] at (TP@title.east) 
+{
+    \includegraphics[height=5cm]{logos/fenix_qr_white.png}
+};
+\node[anchor=south east,xshift=-12cm, yshift=-7.5cm] at (TP@title.east) 
+{
+    \includegraphics[width=21cm]{logos/inl_logo.png}
+};
 \centering
 \begin{columns}
     \hspace{2mm}

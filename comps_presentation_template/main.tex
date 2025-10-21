@@ -9,7 +9,15 @@
 \usepackage{geometry}
 \usepackage{fontspec}
 \setmainfont{Arial}
+\renewcommand{\familydefault}{\rmdefault}
+
+\usepackage{adjustbox}
 \usepackage{xcolor}
+% NCSU primary palette
+\definecolor{NCSURed}{HTML}{CC0000}
+\definecolor{NCSUWhite}{HTML}{FFFFFF}
+\definecolor{NCSUBlack}{HTML}{000000}
+
 \usepackage{pgfplots}
 \usepgfplotslibrary{dateplot}
 \pgfplotsset{compat=1.15}
@@ -20,11 +28,18 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
+
+
 \usepackage{tabu}
 \tabulinesep = 1.5mm
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{math}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows, arrows.meta}
 % INL primary palette
 \usepackage{subfiles} % Best loaded last in the preamble
-
 % command for partial derivative
 \newcommand{\pdiff}[2]{
     \frac{\partial #1}{\partial #2}
@@ -59,15 +74,20 @@
 % Global background set, to use the default frame background
 \usebackgroundtemplate{
   \begin{picture}(0,0)
-    \put(0,-\paperheight){\includegraphics[width=\paperwidth,height=\paperheight]{figs/ncsu_slide_background.pdf}}
+    \put(0,-\paperheight){\includegraphics[width=\paperwidth,height=\paperheight]{figs/fenix-ncsu-background.pdf}}
   \end{picture}
 }
 
 % removes the footnote line that is usually inserted
 \renewcommand*\footnoterule{}
+% sets the figure text color to black
+\setbeamercolor{caption name}{fg=black}
+% sets the figure style to be numbered
+\setbeamertemplate{caption}[numbered]
 % removes auto formatted frame number so we can redefine them
 \setbeamertemplate{frame numbering}[none]
 % defines how the footnote on every slide is defined
+\newcommand{\inserttotalframenumberminusone}{\the\numexpr\inserttotalframenumber-1\relax}
 \setbeamertemplate{footline}
 {
   \leavevmode%
@@ -79,7 +99,7 @@
   \end{beamercolorbox}%
   % adding the page numbers
   \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{author in head/foot}%
-    \insertframenumber{} \hspace*{2ex} 
+    \insertframenumber{}/\inserttotalframenumberminusone{} \hspace*{2ex} 
   \end{beamercolorbox}}%
   \vspace{0.5em}
 }
@@ -153,8 +173,11 @@
   }{}%
 }
 
-
-    
+% sets the footnote in columns to be numbers and not letters
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+\makeatletter
+\renewcommand\thempfootnote{\thefootnote}
+\makeatother
 % Remove the page icon and number from the bibliography
 \DeclareFieldFormat{pages}{}
 \DeclareFieldFormat{postnote}{}
@@ -205,7 +228,6 @@
 \newcommand{\advisor}[1]{%
   \gdef\@advisor{#1}%
 }
-
 \newcommand{\insertadvisor}{%
   \@ifundefined{@advisor}
     {\@latex@warning@no@line{First author not set}}
@@ -224,7 +246,7 @@
 % short author, this is what will be displayed on every slide
 \author[\insertplainfirstauthor]{}
 \setbeamertemplate{background canvas}{%
-    \includegraphics[width=\paperwidth,height=\paperheight]{figs/ncsu_slide_background.pdf}%
+    \includegraphics[width=\paperwidth,height=\paperheight]{figs/fenix-ncsu-background.pdf}%
 }
 % setting the markers in the itemize environment to be bullets
 \setbeamertemplate{itemize item}{\centering\textcolor{black}{$\bullet$}}
@@ -235,17 +257,17 @@
 \setbeamerfont{itemize subitem}{family=\centering}
 \setbeamerfont{itemize subsubitem}{family=\centering}
 
-\AtBeginSection[]{
-  \begingroup
-  \setbeamercolor{section in toc}{fg=black}
-  \begin{frame}
-    \tableofcontents[currentsection]
-  \end{frame}
-  \endgroup
-}
+%\AtBeginSection[]{
+%  \begingroup
+%  \setbeamercolor{section in toc}{fg=black}
+%  \begin{frame}
+%    \tableofcontents[currentsection]
+%  \end{frame}
+%  \endgroup
+%}
 
 \begin{document}
-%
+
 % Title slide
 %
 % set the background for the title slide to be different if needed 
@@ -272,57 +294,116 @@
       {\normalsize \textbf{Supported by the Idaho National Laboratory, Laboratory Directed Research \& Development (LDRD) Program}}
     \end{minipage}
 \end{frame}
-
+%
 \addtocounter{framenumber}{-1}
 \section{Motivation and Background}
 \begin{frame}{Motivation}
-  \vfill{}
+  \vspace{1cm}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{itemize}
+      \item In recent years, Fusion energy has gained significant interest and funding.
+      \begin{itemize}
+        \item Several companies are targeting 2030 for energy generation.
+      \end{itemize}
+      \item However, designing plasma facing components (PFCs) is particularly challenging.
+      \begin{itemize}
+        \item PFCs exist in uniquely extreme environments.
+        \item Experimental data is rare and expensive.
+      \end{itemize}
+    \end{itemize}
+    \column{0.5\textwidth}
+      \begin{figure}[H]
+        \centering
+        %https://www.iter.org/sci/MakingitWork
+      \adjincludegraphics[height=5cm,trim={{.5\width} 0 0 0},clip]{figs/jet_tokamak_plasma_overlay_1.jpg}
+        \caption{Interior of the Joint European Torus. Photo: CCFE, JET}
+    \end{figure}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Modeling Needs}
+  \vspace{1cm}
   \begin{itemize}
-    \item In recent years, Fusion energy has gained significant interest and funding.
+    \item To facilitate the design of PFCs multiphysics simulation frameworks are required\stepcounter{footnote}\cite{carter2020powering}.
+    \item Plasma material interactions in fusion devices are complex and multiphysics effects are significant.
+    \item Typically fluid plasma models make assumptions about the velocity distributions which can be invalid in the fusion pasma edge.
     \begin{itemize}
-      \item Several fusion energy companies are targeting 2030 as the goal for energy generation.
-    \end{itemize}
-    \item However, the design plasma facing components (PFCs) is particularly challenging.
-    \begin{itemize}
-      \item PFCs exist in a highly coupled multiphysics environment.
-      \item Experimental data is rare and expensive.
-    \end{itemize}
-    \item In order to meet this challenge scalable multiphysics frameworks are required\cite{carter2020powering}.
-    \begin{itemize}
-      \item To address this need kinetic plasma modeling capabilities are being developed as a part of the Fusion ENergy Integrated multiphys-X (FENIX) framework.
-      \item FENIX benefits from all of the flexiblity and scalability of the MOOSE framework.
+      \item As a result higher fidelity plasma models should be used.
     \end{itemize}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Particle-In-Cell}
-  \vfill{}
-  \begin{itemize}
-    \item Individual computational particles that represent multiple physical particles are tracked.
+\begin{frame}{FENIX}
+  \vspace{0.5cm}
+  \begin{columns}
+    \column{0.5\textwidth}
     \begin{itemize}
-      \item In FENIX this is build on MOOSE's Ray Tracing module.
+      \item To address modeling needs the Fusion ENergy Integrated multiphys-X (FENIX) framework is being developed.
+      \begin{itemize}
+        \item FENIX is built on top of the MOOSE framework.
+      \end{itemize}
+       \item FENIX utilizes a Finite Element based Particle-In-Cell (PIC) method for modeling the edge plasma.
+      \begin{itemize}
+        \item Individual computational particles that represent multiple physical particles are tracked.
+        \item In FENIX this is built on MOOSE's Ray Tracing module.
+      \end{itemize}
+  %    \item Maxwell's equations are solved based on computational particle positions and paths. 
+  %    \begin{itemize}
+  %      \item Typically, finite difference solvers with uniform grids and heuristically developed mapping schemes are used.
+  %    \end{itemize}
+  %    \item FENIX is built on top of the MOOSE framework, this enables
+  %    \begin{itemize}
+  %      \item Finite element based simulations.
+  %      \item 1D,2D, or 3D simulations.
+  %      \item Non-uniform domain discritizations.
+  %      \item Massive parallelization.
+  %      \item Rhobust software quality assurance and testing.
+  %      \item Coupling with other physics modules.
+  %    \end{itemize}
     \end{itemize}
-    \item Maxwell's equations are solved based on computational particle positions and path. 
-    \begin{itemize}
-      \item Typically, finite difference solvers with uniform grids are used.
-    \end{itemize}
-    \item FENIX is built on top of the MOOSE framework, this enables
-    \begin{itemize}
-      \item Finite element based simulations.
-      \item 1D,2D, or 3D simulations.
-      \item Non-uniform domain discritizations.
-      \item Massive parallelization.
-      \item Rhobust software quality assurance and testing.
-      \item Coupling with other physics modules.
-    \end{itemize}
-  \end{itemize}
+    \column{0.5\textwidth} 
+    \vspace{0.5cm}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{figs/cone_ray_study_rays.png}
+      \caption{Example Cone Ray Study}
+    \end{figure}
+\end{columns}
 \end{frame}
 
 \begin{frame}
-  \vspace{0.5cm}
-  \begin{figure}[H]
-    \includegraphics[height=0.8\textheight]{figs/flowchart.png}
-  \end{figure}
+  \vspace{1cm}
+\begin{figure}[H]
+  \begin{tikzpicture}[
+    auto,
+    node distance = 1cm,
+    very thick,
+    algoBlue/.style={rectangle,
+    draw=NCSURed,
+    font=\bfseries\boldmath,
+    text width=3.5cm,
+    align=center,
+    rounded corners=2.5mm},
+    auto,
+    line width = 2pt
+    ]
+    \node[algoBlue] (1) [yshift=0.25cm] {Initialize Particles};
+    \node[algoBlue] (2) [yshift=-1cm] {Calculate $\vec{v}_{n+1/2}$ using $\vec{E}_n$ and $\vec{B}_n$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (1) -- (2);
+    \node[algoBlue] (3) [xshift=5cm, yshift=-3.75cm] {Move particles to $\vec{r}_{n+1}$ using $\vec{v}_{n+1/2}$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (2.east) -| (3.north);
+    \node[algoBlue] (4) [xshift=2.5cm, yshift=-6cm] {Compute $\left< J_{n+{1/2}}, \psi \right>$ during movement};
+    \draw[line width=0.3mm, >=triangle 45, ->] (3.south) |- (4.east);
+    \node[algoBlue] (5) [xshift=-2.5cm, yshift=-6cm] {Compute $\left< \rho_{n+1}, \psi \right>$ based on $\vec{r}_{n+1}$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (4) -- (5);
+    \node[algoBlue] (6)  [xshift=-5cm, yshift=-4.5cm] {Particle\\Collisions};
+    \draw[line width=0.3mm, >=triangle 45, ->] (5.west) -| (6.south);
+    \node[algoBlue] (7)  [xshift=-5cm, yshift=-2.5cm] {Solve $\vec{E}_{n+1}$ and $\vec{B}_{n+1}$ using $\left< \rho_{n+1}, \psi \right>$ and $\left< J_{n+{1/2}}, \psi \right>$};
+    \draw[line width=0.3mm, >=triangle 45, ->] (6) -- (7);
+    \draw[line width=0.3mm, >=triangle 45, ->] (7.north) |- (2.west);
+  \end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \section{Mathematics and Verification}
@@ -347,14 +428,14 @@
     \begin{itemize}
       \item FENIX treats computational particles as point particles.
     \end{itemize}
-    \begin{align}
+    \begin{align*}
       f \left( \vec{r}, \vec{v}, t \right) 
       =
       \sum_{i=1}^N 
       \omega_i q_i 
       \delta \left( \vec{r} - \vec{r}_i(t) \right)
       \delta \left( \vec{v} - \vec{v}_i(t) \right)
-    \end{align}
+    \end{align*}
     \begin{columns}
       \column{0.5\textwidth}
       \begin{itemize}
@@ -378,12 +459,12 @@
   \centering
   The equations of motion are solved for each computational particle, individually.
     \centering
-      \begin{equation}
+      \begin{equation*}
         \diff{\,\vec{r}}{t}
         =
         \vec{v}
-      \end{equation}
-      \begin{equation}
+      \end{equation*}
+      \begin{equation*}
           \diff{\,\vec{v}}{t}
           =
           \frac{q}{m}
@@ -392,101 +473,169 @@
             \vec{v} \times
             \vec{B}
           \right)
-      \end{equation}
-    $\vec{E}$ and $\vec{B}$ represent the electric and magnetic fields repsectively.
+      \end{equation*}
+      \begin{itemize}
+        \item $\vec{E}$ and $\vec{B}$ represent the electric and magnetic fields repsectively.
+        \item The standard methods for doing this numerically are the Leapfrog method and the Boris method.
+      \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Leapfrog Particle Stepping}
+  \vspace{1cm}
   \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figs/BorisVisualization.png}
   \end{figure}
+  \begin{align*}
+    \vec{r}_{n+1} = \vec{r}_n + \vec{v}_{n + 1/2} \Delta t
+  \end{align*}
 \end{frame}
 
 
 \begin{frame}{Boris Stepping}
-  \vfill{}
-  \centering
-  Particles are stepped through electromagnetic fields using the boris algorithm\cite{boris1970relativistic}.
-  \vspace{0.25cm}
+  \vspace{1cm}
   \begin{columns}
     \column{0.5\textwidth}
-      \begin{equation} \label{eq:e_half1} \vec{v}^{\,-}
-        =
-        \vec{v}_{n}
-        +
-        \frac{q}{m}
-        \vec{E}_n
-        \frac{\Delta t}{2}
-      \end{equation}
-      \begin{equation} \label{eq:boris_v_plus}
-        \vec{v}^{\,+}
-        =
-        \vec{v}^{\,-}
-        +
-        \vec{v}^{\,'}
-        \times
-        \vec{s}
-      \end{equation}
-      \begin{equation} \label{eq:boris_v_prime}
-        \vec{v}^{\,'}
-        =
-        \vec{v}^{\,-}
-        +
-        \vec{v}^{\,-}
-        \times
-        \vec{l}
-      \end{equation}
-      \begin{equation} \label{eq:boris_t}
-        \vec{l} =
-        \frac{q}{m}
-        \vec{B}_n
-        \Delta t
-      \end{equation}
-      \column{0.5\textwidth}
-      \begin{equation} \label{eq:boris_s}
-        \vec{s} =
-        \frac{2 \vec{l}}{
-          1 + \vec{l} \cdot \vec{l}
-        }
-      \end{equation}
-      \begin{equation} \label{eq:mag_step}
-        \frac{
-          \vec{v}^{\,+}
-          -
-          \vec{v}^{\,-}
-        }{ \Delta t}
-        =
-        \frac{q}{m}
-        \left(
-          \vec{v}^{\,+}
-          +
-          \vec{v}^{\,-}
-        \right)
-        \times
-        \vec{B}_n
-      \end{equation}
-      \begin{equation} \label{eq:e_half2}
-        \vec{v}_{n+1}
-        =
-        \vec{v}^{\,+}
-        +
-        \frac{q}{m}
-        \vec{E}_n
-        \frac{\Delta t}{2}
-      \end{equation}
+    \begin{align*}
+      \vec{E} = E_0 \hat{x}
+    \end{align*}
+    \column{0.5\textwidth}
+    \begin{align*}
+      \vec{B} = B_0 \hat{z}
+    \end{align*}
+  \end{columns} 
+  \vspace{-2cm}
+  \begin{columns}
+    \column{0.25\textwidth}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[above] at (1.75,2.5) {};
+          \draw[line width=0.3mm, >=triangle 45, ->] (1,0) -- (2,0) node[midway, above] {$\vec{v}_n$};
+            \draw[->] (0,-2) -- (0.5,-2) node[midway, right=10pt] {$x$};  % X-axis
+            \draw[->] (0,-2) -- (0,-1.5) node[midway, above=10pt] {$y$};  % Y-axis
+        \end{tikzpicture}
+      \end{figure}
+    \column{0.25\textwidth}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \draw[line width=0.3mm, >=triangle 45, ->] (1,0) -- (2.5,0) node[midway, above] {$\vec{v}^{\,-}$};
+        \end{tikzpicture}
+      \end{figure}
+    \column{0.25\textwidth}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[above] at (1.75,1.6) {};
+          \draw[line width=0.3mm, >=triangle 45, ->] (1,0) -- (2.05,-1.05 );
+          \node[above] at (1.75,0) {$\vec{v}^{\,+}$};
+        \end{tikzpicture}
+      \end{figure}
+    \column{0.25\textwidth}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[above] at (1.75,1.6) {};
+          \draw[line width=0.3mm, >=triangle 45, ->] (1,0) -- (3.5,-1.05 );
+          \node[above] at (1.75,0) {$\vec{v}_{n+1}$};
+        \end{tikzpicture}
+      \end{figure}
   \end{columns}
-  \vspace{0.25cm}
-  $\vec{E}$ and $\vec{B}$ represent the electric and magnetic fields respecitvely, and $n$ is denotes the number of the current timestep.
+  \vspace{1cm}
+  \begin{columns}
+    \column{0.25\textwidth}
+    1: Initial Velocity at step $n$
+    \column{0.25\textwidth}
+    2: Accelerate with $\vec{E}$ through $\Delta t/2$
+    \column{0.25\textwidth}
+    3: Rotate with $\vec{B}$ through $\Delta t$
+    \column{0.25\textwidth}
+    4: Accelerate with $\vec{E}$ through $\Delta t/2$
+  \end{columns}
+%  \vfill{}
+%  \centering
+%  Particles are stepped through electromagnetic fields using the boris algorithm\cite{boris1970relativistic}.
+%  \vspace{0.25cm}
+%  \begin{columns}
+%    \column{0.5\textwidth}
+%      \begin{equation} \label{eq:e_half1} \vec{v}^{\,-}
+%        =
+%        \vec{v}_{n}
+%        +
+%        \frac{q}{m}
+%        \vec{E}_n
+%        \frac{\Delta t}{2}
+%      \end{equation}
+%      \begin{equation} \label{eq:boris_v_plus}
+%        \vec{v}^{\,+}
+%        =
+%        \vec{v}^{\,-}
+%        +
+%        \vec{v}^{\,'}
+%        \times
+%        \vec{s}
+%      \end{equation}
+%      \begin{equation} \label{eq:boris_v_prime}
+%        \vec{v}^{\,'}
+%        =
+%        \vec{v}^{\,-}
+%        +
+%        \vec{v}^{\,-}
+%        \times
+%        \vec{l}
+%      \end{equation}
+%      \begin{equation} \label{eq:boris_t}
+%        \vec{l} =
+%        \frac{q}{m}
+%        \vec{B}_n
+%        \Delta t
+%      \end{equation}
+%      \column{0.5\textwidth}
+%      \begin{equation} \label{eq:boris_s}
+%        \vec{s} =
+%        \frac{2 \vec{l}}{
+%          1 + \vec{l} \cdot \vec{l}
+%        }
+%      \end{equation}
+%      \begin{equation} \label{eq:mag_step}
+%        \frac{
+%          \vec{v}^{\,+}
+%          -
+%          \vec{v}^{\,-}
+%        }{ \Delta t}
+%        =
+%        \frac{q}{m}
+%        \left(
+%          \vec{v}^{\,+}
+%          +
+%          \vec{v}^{\,-}
+%        \right)
+%        \times
+%        \vec{B}_n
+%      \end{equation}
+%      \begin{equation} \label{eq:e_half2}
+%        \vec{v}_{n+1}
+%        =
+%        \vec{v}^{\,+}
+%        +
+%        \frac{q}{m}
+%        \vec{E}_n
+%        \frac{\Delta t}{2}
+%      \end{equation}
+%  \end{columns}
+%  \vspace{0.25cm}
+%  $\vec{E}$ and $\vec{B}$ represent the electric and magnetic fields respecitvely, and $n$ is denotes the number of the current timestep.
 \end{frame}
-
+%
 \begin{frame}{Cyclotron Motion}
   \vfill{}
   \begin{columns}
     \centering
     \column{0.5\textwidth}
     \begin{itemize}
-      \item A single particle in the magnetic field given by $\vec{B} = 1 \hat{z}$
+      \item A single particle in the magnetic field given by $\vec{B} =  \hat{z} \unit{T}$
       \item Particle Properties:
       \begin{itemize}
         \item $q = 1 \unit{C}$
@@ -497,9 +646,18 @@
     \end{itemize}
     $v_\perp$ is the magnitude of the velocity perpendicular to the magnetic field.
     \column{0.5\textwidth}
-      \begin{figure}[H]
-        \includegraphics[width=0.9\textwidth]{figs/cyclotron.png}
-      \end{figure}
+    \vspace{0.75cm}
+    \begin{figure}[ht]
+    \begin{tikzpicture}
+        \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.8\textwidth]{figs/cyclotron.png}};
+        \begin{scope}[x={(image.south east)},y={(image.north west)}] % Coordinate system based on the image
+        \draw[line width=0.5mm, >=triangle 45, ->] (0.59,0.97) arc[start angle=90, end angle=30, radius=0.39];
+
+        %(0.59,0.95) -- (0.85,0.95); 
+        % Draw aarrow from (x1, y1) to (x2, y2)
+        \end{scope}
+    \end{tikzpicture}
+    \end{figure}
   \end{columns}
 \end{frame}
 
@@ -519,31 +677,31 @@
 \end{frame}
 
 \begin{frame}{Charge Density Calculation}
-    \vspace{0.75cm}
+    \vspace{1cm}
     \begin{equation}
       \left< \, 
-      \rho(\vec{r}\,), 
-      \phi_i(\vec{r}\,)
+      \rho_n, 
+      \psi
       \right> 
       = 
       \sum_{j=1}^{N_i} 
       q_j\,
       \omega_j\,
       \psi
-      \left( \vec{r} - \vec{r}_j
+      \left( \vec{r} - \vec{r}_j(t_n)
       \right) 
     \end{equation}
-    \vspace{-0.75cm}
+    \vspace{-0.25cm}
   \begin{columns}
     \column{0.5\textwidth}
     \begin{itemize}
-      \item Solving for the electric field requires solving Poisson's equation.
+      \item When using electrostatics the electric field can be calculated via Poisson's equation.
     \end{itemize}
-    \begin{align}
+    \begin{align*}
       \laplacian \phi = \frac{ \rho }{ \varepsilon_0 }
-    \end{align}
+    \end{align*}
     \begin{itemize}
-      \item This requies evaluating the inner product of the computational charge distribution and the basis functions, $\psi$
+      \item The variational formulation requies evaluating the inner product of the computational charge distribution and the basis functions, $\psi$
     \end{itemize}
     \column{0.5\textwidth}
     \begin{figure}[H]
@@ -553,23 +711,54 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Particle Initialization}
+
+\begin{frame}{Verification Problem}
+  \vspace{1cm}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{itemize}
+      \item Represent a uniform charge density profile with computational partilces.
+    \end{itemize}
+    \begin{align*}
+      \frac{\rho}{\varepsilon_0} = 6
+      \fracunit{V}{m$^2$}
+    \end{align*}
+    \begin{itemize}
+      \item Solve for an electric potential consistent with the charge density profile.
+    \end{itemize}
+    \begin{align*}
+      \phi(x, y, z) 
+      =x  (1 - x) + y (1 - y) + z  (1 - z) 
+      \unit{V}
+    \end{align*}
+    \column{0.5\textwidth}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{figs/density_verification.png}
+    \end{figure}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Charge Density}
   \vspace{1cm}
   \begin{columns}
     \column{0.5\textwidth}
       \begin{itemize}
-        \item A widely used initial condition for particles is a uniform distribution throughout the domain.
-        \begin{itemize}
-          \item In FENIX each elements volume is uniformly sampled.
-        \end{itemize}
-      \item Initial particle position is a randomly sample quantity so the error in the projection of the particle density onto the mesh follows a standard sample variance.
+          \item Weights are assigned based on target number density $\rho_n$ element volume $V_E$ and particles per element, $N$.
       \end{itemize}
-      \begin{align}
+      \begin{align*}
+        \omega = 
+        \frac{\rho_n V_E}{N}
+      \end{align*}
+      \begin{itemize}
+      \item Position are randomly sampled so the error in the projection of the density onto the mesh follows a sample variance.
+      \end{itemize}
+      \begin{align*}
         S^2 = 
         \frac{ 1 }{ N - 1 }
         \sum_{i=1}^N 
         \left( x_i - \overline{x} \right)^2
-      \end{align}
+      \end{align*}
     \column{0.5\textwidth}
       \centering 
       \begin{figure}
@@ -577,16 +766,19 @@
         \includegraphics[height=0.7\textheight]{figs/density_error.png}
       \end{figure}
   \end{columns}
-  
 \end{frame}
 
 \begin{frame}{Electrostatic Potential}
   \vfill{}
   \begin{columns}
     \column{0.5\textwidth}
-    \begin{figure}[H]
-      \includegraphics[width=0.7\textwidth]{figs/potential_visualiation.png}
-     \end{figure}
+    \begin{itemize}
+      \item In this example first order finite element basis functions are used. 
+      \begin{itemize}
+        \item These basis functions have second order convergence. 
+        \item Using particles as the source terms should not effect the spatial convergence rate of the system.
+      \end{itemize}
+    \end{itemize}
     \column{0.5\textwidth}
     \begin{figure}[H]
       \includegraphics[width=0.8\textwidth]{figs/potential_error.png}
@@ -594,8 +786,9 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Current Density}
-      \begin{align}
+\begin{frame}{Current Density} 
+    \vspace{1cm}
+      \begin{align*}
         \left<
           \vec{J}_{n + 1/2}
           \left(\vec{r}, t\right),
@@ -609,25 +802,43 @@
         \cdot
         \vec{\psi}(\vec{r}_i(t))
         dt
-      \end{align}
+      \end{align*} 
+      \vspace{-1cm}
   \begin{columns}
-    \column{0.5\textwidth}
+    \column{0.7\textwidth}
+      \vspace{0.5cm}
       \begin{itemize}
-        \item Current density is often a parameter of interest and is required to solve the full set of Maxwell's equations
+        \item Time averaging the current density ensures charge conservation\stepcounter{footnote}\cite{eastwood1991virtual}$^,$\stepcounter{footnote}\cite{pinto2014charge}.
+        \begin{itemize}
+          \item Conservation is required to ensure Maxwell's equations are well posed.
+        \end{itemize}
       \end{itemize}
-      \begin{align}
+      \begin{align*}
         \pdiff{\rho}{t} &= - \div \vec{J}\\
         \left< \rho_1 - \rho_0, \psi \right> &= \Delta t \left< \vec{J}_{n + 1/2}, \grad \psi \right>
-      \end{align}
-    \column{0.5\textwidth}
-    \begin{figure}
-      \centering 
-      \includegraphics[height=0.5\textheight]{figs/conservation.png}
-      \setlength{\unitlength}{1cm}
-      \begin{picture}(0,0)
-        \put(-2.65, 0){\makebox(0,0)[lt]{{\tiny[$C$\textbf{/}m$^2$]}}} % Add a textbox at coordinates (2,2)
-      \end{picture}
-    \end{figure}
+      \end{align*}
+    \column{0.3\textwidth}
+
+    \begin{figure}[ht]
+    \begin{tikzpicture}
+        \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=\textwidth]{figs/conservation.png}};
+        \begin{scope}[x={(image.south east)},y={(image.north west)}] % Coordinate system based on the image
+        \draw[line width=0.25mm, >=triangle 45, ->] (0.59,0.45) -- (0.36,0.65);
+        \node[] at (0.5,-0.05) {\footnotesize$C\;/$m$^2$};
+        %(0.59,0.95) -- (0.85,0.95); 
+        % Draw aarrow from (x1, y1) to (x2, y2)
+        \end{scope}
+    \end{tikzpicture}
+  \end{figure}
+%    \end{figure}
+%    \begin{figure}
+%      \centering 
+%      \includegraphics[width=1.1\textwidth]{figs/conservation.png}
+%      \setlength{\unitlength}{1cm}
+%      \begin{picture}(0,0)
+%        \put(-0.3, 0.5){\makebox(0,0)[lt]{{\footnotesize[$C$ \textbf{/} m$^2$]}}} % Add a textbox at coordinates (2,2)
+%      \end{picture}
+%    \end{figure}
   \end{columns}
 \end{frame}
 
@@ -650,6 +861,7 @@
       \includegraphics[width=\textwidth]{figs/lieberman_population_comparison.png}
     \end{figure}
   \end{columns}
+    \vspace{0.5cm}
     A simple collisionless single particle simulation demonstration from Lieberman\cite{lieberman2005} was replicated and documented as a training example.
 \end{frame}
 
@@ -664,12 +876,12 @@
       \item Dory–Guest–Harris
     \end{itemize}
     \item Replication of an analytic solution applicable to both fluid and kinetic simulations\cite{lafleur2022space}.
-    \item Particle-Particle collisions will be implemented.
+    \item Direct Simulaiton Monte Carlo collisions will be implemented.
     \item Computing heatfluxes from particle fluxes.
     \item Coupling with other MOOSE applications.
   \end{itemize}
 \end{frame}
-
+%
 \section{Summary}
 \begin{frame}{Summary}
   \vfill{}
@@ -679,8 +891,8 @@
       \item The fundamental capabilities for PIC have been verified.
       \item FENIX will enable FEM PIC simulations within the MOOSE frameowork.
       \item FENIX can perform simulations in 1D, 2D, and 3D.
-      \item FENIX will be one of the only openly available massively parallel kinetic plasma simulation tools.
       \item Rhobust verification enables FENIX to be able to utilized as an engineering tool.
+      \item Once DSMC has been implemented FENIX will be capable of modeling the conditions in fusion plasma edges.
     \end{itemize}
     \column{0.5\textwidth}
     \begin{figure}[H]
@@ -690,5 +902,5 @@
 \end{frame}
 \begin{frame}
 \end{frame}
-
+%
 \end{document}
